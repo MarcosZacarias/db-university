@@ -44,48 +44,112 @@ GROUP BY `department_id`;
 
 ```sql
 -- Selezionare tutti gli studenti iscritti al Corso di Laurea in Economia
+SELECT
+`stu`.`id` "id",
+`stu`.`name` "name",
+`stu`.`surname` "surname",
+`deg`.`name` "degree"
+FROM `students` `stu`
 
+INNER JOIN `degrees` `deg`
+ON `deg`.`id` = `stu`.`degree_id`
 
+WHERE `deg`.`name`= "Corso di Laurea in Economia";
 ```
 
 ### Query 2
 
 ```sql
 -- Selezionare tutti i Corsi di Laurea Magistrale del Dipartimento di Neuroscienze
+SELECT
+`dep`.`name` "department",
+`deg`.`name` "name",
+`deg`.`level` "level"
+FROM `departments` `dep`
 
+INNER JOIN `degrees` `deg`
+ON `dep`.`id` = `deg`.`department_id`
 
+WHERE `dep`.`name` = "Dipartimento di Neuroscienze"
+AND `deg`.`level` = "magistrale";
 ```
 
 ### Query 3
 
 ```sql
 -- Selezionare tutti i corsi in cui insegna Fulvio Amato (id=44)
+SELECT *
+FROM `courses` `cou`
 
+INNER JOIN `course_teacher` `cou_tea`
+ON `cou`.`id` = `cou_tea`.`course_id`
 
+INNER JOIN `teachers` `tea`
+ON `tea`.`id` = `cou_tea`.`teacher_id`
+
+WHERE `tea`.`id` = 44;
 ```
 
 ### Query 4
 
 ```sql
 -- Selezionare tutti gli studenti con i dati relativi al corso di laurea a cui sono iscritti e il relativo dipartimento, in ordine alfabetico per cognome e nome
+SELECT `stu`.`surname` "surname_student",
+`stu`.`name` "name_student",
+`deg`.*,
+`dep`.`name` "department_name"
+FROM `students` `stu`
 
+INNER JOIN `degrees` `deg`
+ON `stu`.`degree_id` = `deg`.`id`
 
+INNER JOIN `departments` `dep`
+ON `dep`.`id` = `deg`.`department_id`
+
+ORDER BY `stu`.`surname`, `stu`.`name`;
 ```
 
 ### Query 5
 
 ```sql
 -- Selezionare tutti i corsi di laurea con i relativi corsi e insegnanti
+SELECT `deg`.*,
+`cou`.`name` "course_name",
+`tea`.`surname` "teacher_surname",
+`tea`.`name` "teacher_name"
+FROM `degrees` `deg`
 
+INNER JOIN `courses` `cou`
+ON `cou`.`degree_id`= `deg`.`id`
 
+INNER JOIN `course_teacher` `cou_tea`
+ON `cou`.`id` = `cou_tea`.`course_id`
+
+INNER JOIN `teachers` `tea`
+ON `tea`.`id` = `cou_tea`.`teacher_id`;
 ```
 
 ### Query 6
 
 ```sql
 -- Selezionare tutti i docenti che insegnano nel Dipartimento di Matematica (54)
+SELECT `tea`.*,
+`dep`.`name` "department"
+FROM `departments` `dep`
 
+INNER JOIN `degrees` `deg`
+ON `deg`.`department_id` = `dep`.`id`
 
+INNER JOIN `courses` `cou`
+ON `cou`.`degree_id`= `deg`.`id`
+
+INNER JOIN `course_teacher` `cou_tea`
+ON `cou`.`id` = `cou_tea`.`course_id`
+
+INNER JOIN `teachers` `tea`
+ON `tea`.`id` = `cou_tea`.`teacher_id`
+
+WHERE `dep`.`name` = "Dipartimento di Matematica";
 ```
 
 ### Query 7 **BONUS**
