@@ -133,8 +133,8 @@ ON `tea`.`id` = `cou_tea`.`teacher_id`;
 
 ```sql
 -- Selezionare tutti i docenti che insegnano nel Dipartimento di Matematica (54)
-SELECT `tea`.*,
-`dep`.`name` "department"
+SELECT `dep`.`name` "department",
+`tea`.*
 FROM `departments` `dep`
 
 INNER JOIN `degrees` `deg`
@@ -149,7 +149,9 @@ ON `cou`.`id` = `cou_tea`.`course_id`
 INNER JOIN `teachers` `tea`
 ON `tea`.`id` = `cou_tea`.`teacher_id`
 
-WHERE `dep`.`name` = "Dipartimento di Matematica";
+WHERE `dep`.`name` = "Dipartimento di Matematica"
+
+GROUP BY `tea`.`id`;
 ```
 
 ### Query 7 **BONUS**
